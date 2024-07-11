@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import { Autocomplete, TextField } from '@mui/material';
 interface Address {
   street: string;
   suite: string;
@@ -14,8 +15,9 @@ interface User {
   address: Address;
 }
 
-const UserList = () => {
-  const [users, setUsers] = useState([]);
+const UserList: React.FC = () => {
+  const [users, setUsers] = useState<User[]>([]);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   useEffect(() => {
     fetch('/users.json')
@@ -27,16 +29,20 @@ const UserList = () => {
   return (
     <div>
       <h1>User List</h1>
-      <ul>
-        {users.map((user: { id: number, name: string, username: string, email: string, address: { street: string, suite: string, city: string, zipcode: string } }) => (
-          <li key={user.id}>
-            <h2>{user.name}</h2>
-            <p>Username: {user.username}</p>
-            <p>Email: {user.email}</p>
-            <p>Address: {user.address.street}, {user.address.suite}, {user.address.city}, {user.address.zipcode}</p>
-          </li>
-        ))}
-      </ul>
+      <Autocomplete
+        options={users}
+        getOptionLabel={(option) => option.name}
+        renderInput={(params) => <TextField {...params} label="Search User" variant="outlined" />}
+        onChange={(event, newValue) => setSelectedUser(newValue)}
+      />
+
+      {selectedUser && (
+        <div>
+          <h2>Selected User</h2>
+          <p>Name: {selectedUser.name}</p>
+          <p>Address: {selectedUser.address.street}, {selectedUser.address.suite}, {selectedUser.address.city}, {selectedUser.address.zipcode}</p>
+        </div>
+      )}
     </div>
   );
 };
