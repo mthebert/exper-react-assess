@@ -64,7 +64,7 @@ const UserList: React.FC = () => {
         lastName,
         suffix
     };
-});
+}).sort((a, b) => a.lastName.localeCompare(b.lastName));
 
   const filterOptions = (options: User[], state: { inputValue: string }) => {
     const inputValue = state.inputValue.toLowerCase();
