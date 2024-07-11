@@ -5,6 +5,9 @@ selected user’s name and address in the page using TypeScript.
 
 ## Getting Started
 
+Clone the app from my repo using:
+`git clone https://github.com/mthebert/exper-react-assess.git`
+
 This project was built using:
     NodeJS v21.7.2
     React v18
