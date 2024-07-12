@@ -14,6 +14,7 @@ interface User {
   suffix: string;
   title: string;
   name: string;
+  formattedName: string;
   username: string;
   email: string;
   address: Address;
@@ -52,17 +53,20 @@ const UserList: React.FC = () => {
     // Split remaining name into first and last name
     const [firstName, lastName] = name.split(' ');
 
-    return { title, firstName, lastName, suffix };
+    const formattedName = `${lastName}${suffix ? ' ' + suffix : ''}, ${firstName}${title ? ' (' + title + ')' : ''}`
+
+    return { title, firstName, lastName, suffix, formattedName };
 }
 
   const processedUsers = users.map(user => {
-    const { title, firstName, lastName, suffix } = splitName(user.name);
+    const { title, firstName, lastName, suffix, formattedName } = splitName(user.name);
     return {
         ...user,
         title,
         firstName,
         lastName,
-        suffix
+        suffix,
+        formattedName
     };
   }).sort((a, b) => a.lastName.localeCompare(b.lastName));;
 
@@ -81,7 +85,7 @@ const UserList: React.FC = () => {
       <Autocomplete
         options={processedUsers}
         isOptionEqualToValue={(option, value) => option.id === value.id}
-        getOptionLabel={(option) => option.firstName + option.lastName}
+        getOptionLabel={(option) => option.formattedName}
         filterOptions={filterOptions}
         renderInput={(params) => <TextField {...params} label="Search User" variant="outlined" />}
         onChange={(event, newValue) => setSelectedUser(newValue)}
@@ -89,9 +93,11 @@ const UserList: React.FC = () => {
 
       {selectedUser && (
         <div>
-          <h2>Selected User</h2>
-          <p>Name: {selectedUser.name}</p>
-          <p>Address: {selectedUser.address.street}, {selectedUser.address.suite}, {selectedUser.address.city}, {selectedUser.address.zipcode}</p>
+          <h2>Selected User:</h2>
+          <p>{selectedUser.formattedName}</p>
+          <p>{selectedUser.address.street}</p>
+          <p>{selectedUser.address.suite}</p>
+          <p>{selectedUser.address.city}, {selectedUser.address.zipcode}</p>
         </div>
       )}
     </div>
