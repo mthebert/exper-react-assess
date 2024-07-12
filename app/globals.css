@@ -1,0 +1,14 @@
+.card {
+    margin-top: 5px;
+    background-color: #0033;
+    height: 300px
+}
+
+.cardInput {
+    margin-top: 15px;
+}
+
+.cardContainer {
+    padding: 5px;
+    border: 1px solid #000000;
+}
