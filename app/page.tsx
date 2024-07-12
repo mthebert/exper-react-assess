@@ -40,19 +40,21 @@ const UserList: React.FC = () => {
     const titleMatch = name.match(titleRegex);
     const title = titleMatch ? titleMatch[0].trim() : '';
 
-    // Extract suffix
+    // Find and Extract suffix
     const suffixMatch = name.match(suffixRegex);
     const suffix = suffixMatch ? suffixMatch[0].trim() : '';
 
     // Split remaining name into first and last name
     const [firstName, lastName] = name.split(' ');
 
+    // create formatted name to include title and suffix when available
     const formattedName = `${lastName}${suffix ? ' ' + suffix : ''}, ${firstName}${title ? ' (' + title + ')' : ''}`
 
     return { title, firstName, lastName, suffix, formattedName };
 }
 
   const processedUsers = users.map(user => {
+    // Destructure the formatted name and send it to be formatted, sort object by last name
     const { title, firstName, lastName, suffix, formattedName } = formatName(user.name);
     return {
         ...user,
@@ -64,6 +66,7 @@ const UserList: React.FC = () => {
     };
   }).sort((a, b) => a.lastName.localeCompare(b.lastName));
 
+  // Autocomplete - Filter options based on user input
   const filterOptions = (options: User[], state: { inputValue: string }) => {
     const inputValue = state.inputValue.toLowerCase();
     return options.filter(option => {
