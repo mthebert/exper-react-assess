@@ -32,23 +32,17 @@ const UserList: React.FC = () => {
   }, []);
 
   function formatName(name:string) {
-    // Regular expression to identify titles and suffixes
+    // Regex to identify known titles and suffixes
     const titleRegex = /^(Mr|Ms|Mrs|Miss|Dr|Prof)\.?\s+/i;
     const suffixRegex = /\s+(Jr|Sr|II|III|IV|V)$/i;
 
-    // Extract title
+    // Find and Extract title
     const titleMatch = name.match(titleRegex);
     const title = titleMatch ? titleMatch[0].trim() : '';
-
-    // Remove title from name
-    if (title) name = name.replace(titleRegex, '');
 
     // Extract suffix
     const suffixMatch = name.match(suffixRegex);
     const suffix = suffixMatch ? suffixMatch[0].trim() : '';
-
-    // Remove suffix from name
-    if (suffix) name = name.replace(suffixRegex, '');
 
     // Split remaining name into first and last name
     const [firstName, lastName] = name.split(' ');
