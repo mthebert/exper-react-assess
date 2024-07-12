@@ -31,7 +31,7 @@ const UserList: React.FC = () => {
       .catch((error) => console.error('Error fetching users:', error));
   }, []);
 
-  function splitName(name:string) {
+  function formatName(name:string) {
     // Regular expression to identify titles and suffixes
     const titleRegex = /^(Mr|Ms|Mrs|Miss|Dr|Prof)\.?\s+/i;
     const suffixRegex = /\s+(Jr|Sr|II|III|IV|V)$/i;
@@ -59,7 +59,7 @@ const UserList: React.FC = () => {
 }
 
   const processedUsers = users.map(user => {
-    const { title, firstName, lastName, suffix, formattedName } = splitName(user.name);
+    const { title, firstName, lastName, suffix, formattedName } = formatName(user.name);
     return {
         ...user,
         title,
@@ -68,7 +68,7 @@ const UserList: React.FC = () => {
         suffix,
         formattedName
     };
-  }).sort((a, b) => a.lastName.localeCompare(b.lastName));;
+  }).sort((a, b) => a.lastName.localeCompare(b.lastName));
 
   const filterOptions = (options: User[], state: { inputValue: string }) => {
     const inputValue = state.inputValue.toLowerCase();
@@ -93,7 +93,6 @@ const UserList: React.FC = () => {
 
       {selectedUser && (
         <div>
-          <h2>Selected User:</h2>
           <p>{selectedUser.formattedName}</p>
           <p>{selectedUser.address.street}</p>
           <p>{selectedUser.address.suite}</p>
